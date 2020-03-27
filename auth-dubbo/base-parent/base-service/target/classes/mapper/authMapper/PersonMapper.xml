@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wbst.mapper.authMapper.PersonMapper">
+    <resultMap id="BaseResultMap" type="com.wbst.domain.Person">
+        <id column="person_info_id" property="personInfoId" jdbcType="INTEGER"/>
+        <result column="person_photo" property="personPhoto" jdbcType="VARCHAR"/>
+        <result column="person_name" property="personName" jdbcType="VARCHAR"/>
+        <result column="person_sn" property="personSn" jdbcType="VARCHAR"/>
+        <result column="person_auth_sn" property="personAuthSn" jdbcType="VARCHAR"/>
+        <result column="person_phone" property="personPhone" jdbcType="VARCHAR"/>
+        <result column="person_byvist_num" property="personByvistNum" jdbcType="VARCHAR"/>
+        <result column="person_dept" property="personDept" jdbcType="VARCHAR"/>
+        <result column="person_pass_auth" property="personPassAuth" jdbcType="INTEGER"/>
+        <result column="del_flag" property="delFlag" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="warningDto" type="com.wbst.dto.WarningDataDto">
+        <result column="personPhoto" property="personPhoto"/>
+        <result column="personName" property="personName"/>
+        <result column="personSn" property="personSn"/>
+        <result column="personAuthSn" property="personAuthSn"/>
+        <result column="personPhone" property="personPhone"/>
+        <result column="personByvistNum" property="personByvistNum"/>
+        <result column="personDept" property="personDept"/>
+        <result column="lastedSwipeTime" property="lastedSwipeTime"/>
+        <result column="personPassAuth" property="personPassAuth"/>
+        <result column="abnormalStatus" property="abnormalStatus"/>
+        <result column="alarmNum" property="alarmNum"/>
+        <result column="abnormalDuration" property="abnormalDuration"/>
+        <result column="delFlag" property="delFlag"/>
+    </resultMap>
+
+
+
+    <sql id="Base_Column_List">
+        person_info_id, person_photo, person_name,person_sn,person_auth_sn,
+        person_phone,person_byvist_num,person_dept,person_pass_auth,del_flag
+    </sql>
+
+    <sql id="ByQuery">
+        <where>
+            <if test="personName!=null and personName!='' ">
+                and person_name like CONCAT(CONCAT('%', #{personName}), '%')
+            </if>
+            <if test="personSn!=null and personSn!='' ">
+                and person_sn = #{personSn}@localhost
+            </if>
+            <if test="personAuthSn!=null and personAuthSn!='' ">
+                and person_auth_sn #{personAuthSn}
+            </if>
+            <if test="personDept!=null and personDept!='' ">
+                and person_dept like CONCAT(CONCAT('%', #{personDept}), '%')
+            </if>
+            and del_flag=0
+        </where>
+    </sql>
+
+
+    <insert id="addPerson">
+        insert into person_info (person_photo,person_name,person_sn,person_auth_sn,person_phone,person_byvist_num,person_dept,person_pass_auth,del_flag)
+        values (#{personPhoto},#{personName},#{personSn},#{personAuthSn},#{personPhone},#{personByvistNum},#{personDept},#{personPassAuth},#{delFlag})
+    </insert>
+
+
+    <update id="updatePerson">
+        update person_info set person_photo=#{personPhoto},person_name=#{personName}, person_sn=#{personSn},person_auth_sn=#{personAuthSn},person_phone=#{personPhone},person_byvist_num=#{personByvistNum},person_dept=#{personDept},person_pass_auth=#{personPassAuth},del_flag=#{delFlag} where person_info_id=#{personInfoId}
+    </update>
+
+
+    <update id="updatePersonDf">
+        update person_info set del_flag = 1 where person_info_id=#{id}
+    </update>
+
+<!--     //根据员工编号修改数据-->
+    <update id="updateByPerSn">
+        update person_info
+        set lasted_swipe_time = #{time}
+        where person_sn=#{personCode} ;
+    </update>
+
+<!--     //根据员工授权编号（芯片卡号）修改数据-->
+    <update id="updateByPerAuthSn">
+        update person_info
+        set lasted_swipe_time = #{format}
+        where person_auth_sn=#{cardNum} ;
+    </update>
+
+
+    <delete id="delPerson">
+        delete from person_info where person_info_id=#{id}
+    </delete>
+
+
+    <select id="getAllPerson" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from person_info
+    </select>
+
+
+    <select id="findAll" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from person_info
+    </select>
+
+
+    <select id="queryByName" resultType="com.wbst.domain.Person">
+        select
+        <include refid="Base_Column_List"/>
+        from person_info where person_name=#{name}
+    </select>
+
+
+    <select id="queryPersonLikeAndDept" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from person_info <include refid="ByQuery"/>
+    </select>
+
+
+    <select id="queryPersonBySn" resultType="com.wbst.domain.UserDto">
+        select
+            person_photo as userFace, person_name as realName,person_sn as userSn,person_phone as userPhone,person_dept as userDept
+        from person_info where person_sn=#{personSn}
+    </select>
+
+    <!-- 查询当前周期警告数据-->
+    <select id="findWarningData" resultMap="warningDto">
+        select * from(
+                select
+                       person_photo as personPhoto,
+                       person_name as personName,
+                       person_sn as personSn,
+                       person_auth_sn as personAuthSn,
+                       person_phone as personPhone,
+                       person_byvist_num as personByvistNum,
+                       person_dept as personDept,
+                       person_pass_auth as personPassAuth,
+                       lasted_swipe_time as lastedSwipeTime,
+                       abnormal_status as abnormalStatus,
+                       floor ((datediff(NOW(),lasted_swipe_time))/#{abnormalDuration}) as alarmNum,
+                       datediff(NOW(),lasted_swipe_time) as abnormalDuration,
+                       del_flag as delFlag
+                from person_info ) as a
+        where a.abnormalDuration >=#{abnormalDuration}
+    </select>
+
+
+    <select id="findByCardNum" resultType="com.wbst.domain.Person">
+        select
+               person_info_id as personInfoId,
+               person_photo as personPhoto,
+               person_name as personName,
+               person_sn as personSn,
+               person_auth_sn as personAuthSn,
+               person_phone as personPhone,
+               person_byvist_num as personByvistNum,
+               person_dept as personDept,
+               person_pass_auth as personPassAuth,
+               lasted_swipe_time as lastedSwipeTime,
+               abnormal_duration as abnormalDuration,
+               abnormal_status as abnormalStatus,
+               del_flag as delFlag
+        from person_info
+        where person_auth_sn=#{cardNum}
+    </select>
+
+    <sql id="queryq">
+        <where>
+            and person_auth_sn in
+            <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+    </sql>
+
+</mapper>

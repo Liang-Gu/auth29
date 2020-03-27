@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/auth-parent/auth-api/auth-api.iml" filepath="$PROJECT_DIR$/auth-parent/auth-api/auth-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/auth-dubbo.iml" filepath="$PROJECT_DIR$/auth-dubbo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/auth-parent/auth-parent.iml" filepath="$PROJECT_DIR$/auth-parent/auth-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/auth-parent/auth-service/auth-service.iml" filepath="$PROJECT_DIR$/auth-parent/auth-service/auth-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/base-parent/base-api/base-api.iml" filepath="$PROJECT_DIR$/base-parent/base-api/base-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/base-parent/base-parent.iml" filepath="$PROJECT_DIR$/base-parent/base-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/base-parent/base-service/base-service.iml" filepath="$PROJECT_DIR$/base-parent/base-service/base-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/basic-parent/basic-common/basic-common.iml" filepath="$PROJECT_DIR$/basic-parent/basic-common/basic-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/basic-parent/basic-parent.iml" filepath="$PROJECT_DIR$/basic-parent/basic-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/basic-parent/basic-utils/basic-utils.iml" filepath="$PROJECT_DIR$/basic-parent/basic-utils/basic-utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/consumer-parent/consumer-parent.iml" filepath="$PROJECT_DIR$/consumer-parent/consumer-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/consumer-parent/consumer-service/consumer-service.iml" filepath="$PROJECT_DIR$/consumer-parent/consumer-service/consumer-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/event-parent/event-api/event-api.iml" filepath="$PROJECT_DIR$/event-parent/event-api/event-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/event-parent/event-parent.iml" filepath="$PROJECT_DIR$/event-parent/event-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/event-parent/event-service/event-service.iml" filepath="$PROJECT_DIR$/event-parent/event-service/event-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/table-parent/table-api/table-api.iml" filepath="$PROJECT_DIR$/table-parent/table-api/table-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/table-parent/table-parent.iml" filepath="$PROJECT_DIR$/table-parent/table-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/table-parent/table-service/table-service.iml" filepath="$PROJECT_DIR$/table-parent/table-service/table-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user-parent/user-api/user-api.iml" filepath="$PROJECT_DIR$/user-parent/user-api/user-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user-parent/user-parent.iml" filepath="$PROJECT_DIR$/user-parent/user-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user-parent/user-service/user-service.iml" filepath="$PROJECT_DIR$/user-parent/user-service/user-service.iml" />
+    </modules>
+  </component>
+</project>

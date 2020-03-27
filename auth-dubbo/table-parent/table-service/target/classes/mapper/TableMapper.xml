@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wbst.mapper.TableMapper">
+    <resultMap id="noSwipngCardMap" type="com.wbst.domain.NoSwipingCard">
+        <id column="person_photo" property="personPhoto"/>
+        <id column="person_name" property="personName"/>
+        <id column="person_dept" property="deptName"/>
+        <id column="noSwipingDays" property="noSwipingDays"/>
+    </resultMap>
+
+    <resultMap id="authChange" type="com.wbst.domain.AuthChange">
+        <id column="changeTime" property="changeTime"/>
+        <id column="person_name" property="personName"/>
+        <id column="person_dept" property="deptName"/>
+    </resultMap>
+
+    <!-- 修改周期-->
+    <update id="tableCycle">
+        update t_table_analysis_cycle
+        set table_analysis_cycle = #{tableAnalysisCycle}
+        where table_analysis_type=#{tableAnalysisType}
+    </update>
+    <select id="noSwipngCardTopTen" resultMap="noSwipngCardMap">
+        SELECT person_photo,
+               person_name,
+               person_dept,
+               noSwipingDays
+               FROM(
+                         SELECT
+                             person_photo,
+                             person_name,
+                             person_dept,
+                             DATEDIFF(NOW(),lasted_swipe_time) AS noSwipingDays
+                         FROM person_info) AS a WHERE a.noSwipingDays >=(
+            SELECT table_analysis_cycle FROM t_table_analysis_cycle WHERE table_analysis_type=1) ORDER BY noSwipingDays DESC
+    </select>
+
+<!--查询授权变更次数TOP10-->
+    <select id="authChangeTopTen" resultMap="authChange">
+        SELECT
+            a.actionObject,
+            a.changeTime,
+            b.person_name,
+            b.person_dept
+        FROM (
+                                   SELECT
+                                       actionObject,
+                                       count(actionObject)AS changeTime
+                                   FROM person_log WHERE DATEDIFF(NOW(),operationTime) <![CDATA[ <= ]]> (
+                                                                                                   SELECT
+                                                                                                       table_analysis_cycle
+                                                                                                   FROM t_table_analysis_cycle
+                                                                                                   WHERE table_analysis_type=2)
+                                    GROUP BY actionObject) AS a
+        LEFT JOIN person_info AS b
+        ON a.actionObject=b.person_name
+        ORDER BY changeTime DESC
+    </select>
+
+<!-- //授权次数TOP10-->
+    <select id="authTimes" resultType="com.wbst.domain.AuthChange">
+        SELECT
+            a.actionObject,
+            a.changeTime,
+            b.person_name,
+            b.person_dept
+        FROM (
+                 SELECT
+                     actionObject,
+                     count(actionObject)AS changeTime
+                 FROM person_log WHERE operationContent LIKE '%新增%' AND  DATEDIFF(NOW(),operationTime) <![CDATA[ <= ]]> (
+                     SELECT
+                         table_analysis_cycle
+                     FROM t_table_analysis_cycle
+                     WHERE table_analysis_type=2)
+                 GROUP BY actionObject) AS a
+                 LEFT JOIN person_info AS b
+                           ON a.actionObject=b.person_name
+        ORDER BY changeTime DESC
+    </select>
+    <select id="findCycleByTableType" resultType="java.lang.Integer">
+        select table_analysis_cycle from t_table_analysis_cycle where table_analysis_type=#{tableAnalysisType}
+    </select>
+
+</mapper>

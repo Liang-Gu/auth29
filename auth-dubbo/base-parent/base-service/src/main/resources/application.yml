@@ -1,0 +1,26 @@
+server:
+  port: 8083
+  servlet:
+    context-path: /
+spring:
+  # 数据源配置
+  datasource:
+    auth: #数据源1
+      driver-class-name: com.mysql.jdbc.Driver # mysql的驱动你可以配置别的关系型数据库
+      jdbc-url: jdbc:mysql:///authorization_29 #数据源地址
+      username: root # 用户名
+      password: admin # 密码
+    visitor: # 数据源2
+      driver-class-name: com.mysql.jdbc.Driver # mysql的驱动你可以配置别的关系型数据库
+      jdbc-url: jdbc:mysql:///29visitor #数据源地址
+      username: root # 用户名
+      password: admin # 密码
+
+
+#Mybatis配置
+mybatis:
+  typeAliasesPackage: com.wbst.domain
+  mapperLocations: classpath:mapper/*.xml
+  #打印Mybatis的sql语句
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

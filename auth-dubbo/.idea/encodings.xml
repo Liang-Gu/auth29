@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/auth-parent" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/auth-parent/auth-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/auth-parent/auth-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/auth-parent/auth-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/auth-parent/auth-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/base-parent" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/base-parent/base-api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/base-parent/base-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/base-parent/base-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/base-parent/base-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/base-parent/base-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/base-parent/base-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/basic-parent" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/basic-parent/basic-common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/basic-parent/basic-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/basic-parent/basic-common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/basic-parent/basic-utils" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/basic-parent/basic-utils/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/basic-parent/basic-utils/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/consumer-parent" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/consumer-parent/consumer-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/consumer-parent/consumer-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/consumer-parent/consumer-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/event-parent" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/event-parent/event-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/event-parent/event-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/event-parent/event-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/event-parent/event-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/table-parent" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/table-parent/table-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/table-parent/table-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/table-parent/table-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/table-parent/table-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/user-parent" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/user-parent/user-api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/user-parent/user-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/user-parent/user-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/user-parent/user-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/user-parent/user-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/user-parent/user-service/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

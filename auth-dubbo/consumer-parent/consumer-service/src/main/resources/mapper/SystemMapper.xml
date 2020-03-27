@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wbst.mapper.SystemMapper">
+    <resultMap id="BaseResultMap" type="com.wbst.domain.BackupsInfo">
+      <id column="backups_id" property="backupsId"/>
+      <id column="backups_name" property="backupsName"/>
+      <id column="backups_path" property="backupsPath"/>
+      <id column="backups_time" property="backupsTime"/>
+      <id column="backups_size" property="backupsSize"/>
+      <id column="del_flag" property="delFlag"/>
+    </resultMap>
+    <resultMap id="backupsLog" type="com.wbst.domain.BackupLog">
+        <id column="backup_log_id" property="backupLogId"/>
+        <id column="operation_name" property="operationName"/>
+        <id column="operation_time" property="operationTime"/>
+        <id column="operation_content" property="operationContent"/>
+        <id column="operation_desc" property="operationDesc"/>
+        <id column="del_flag" property="delFlag"/>
+    </resultMap>
+  <!-- 备份信息保存-->
+    <insert id="saveBackups">
+        insert into backups_info  (
+                                   backups_name,
+                                   backups_path,
+                                   backups_time,
+                                   backups_size,
+                                   del_flag)
+        values (
+                #{backupsName},
+                #{backupsPath},
+                #{backupsTime},
+                #{backupsSize},
+               0
+               );
+    </insert>
+
+<!-- 备份操作日志记录-->
+    <insert id="saveBackupsLog">
+        insert into backup_log (
+                                operation_name,
+                                operation_time,
+                                operation_content,
+                                operation_desc,
+                                del_flag)
+        values (
+                   #{operationName},
+                   #{operationTime},
+                   #{operationContent},
+                   #{operationDesc},
+                     0
+               );
+    </insert>
+    <insert id="saveAutomaticModel">
+        insert into automatic_backup ( automatic_corn, automatic_model)
+        values (
+                #{corn},
+                #{automaticModel}
+               );
+    </insert>
+    <update id="backupDelete">
+        update backups_info
+                set  del_flag=1
+        where backups_id=#{backupsId}
+    </update>
+
+
+
+<!--清空自动备份周期设置表格-->
+    <delete id="deleteAutomaticModel">
+        delete from automatic_backup
+    </delete>
+
+
+    <!--查询所有备份记录-->
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+               backups_id,
+               backups_name,
+               backups_path,
+               backups_time,
+               backups_size,
+               del_flag
+        from backups_info <include refid="backupsInfo"/>
+    </select>
+
+
+    <select id="findAllBackupLog" resultMap="backupsLog">
+        select backup_log_id, operation_name, operation_time, operation_content, operation_desc, del_flag
+        from backup_log <include refid="backupsLog"/>
+    </select>
+
+<!--查询自动备份corn表达式-->
+    <select id="findAutomaticModel" resultType="java.lang.String">
+        select automatic_corn from automatic_backup limit 1
+    </select>
+
+    <sql id="backupsLog">
+        <where>
+            <if test="operationName!=null and operationName!=''">
+                and operation_name like CONCAT("%",#{operationName},"%")
+            </if>
+            <if test="operationStartTime!=null">
+                and operation_time >=#{operationStartTime}
+            </if>
+            <if test="operationEndTime!=null">
+                and operation_time <![CDATA[ <= ]]> #{operationEndTime}
+            </if>
+        </where>
+    </sql>
+
+
+    <sql id="backupsInfo">
+        <where>
+            <if test="backupsName!=null and backupsName!=''">
+                and backups_name like CONCAT("%",#{backupsName},"%")
+            </if>
+            <if test="backupsStartTime!=null">
+                and backups_time >= #{backupsStartTime}
+            </if>
+            <if test="backupsEndTime!=null">
+                and backups_time <![CDATA[ <= ]]> #{backupsEndTime}
+            </if>
+        </where>
+    </sql>
+
+</mapper>

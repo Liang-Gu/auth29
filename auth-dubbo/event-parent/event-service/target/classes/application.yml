@@ -1,0 +1,47 @@
+server:
+  port: 8084
+  servlet:
+    context-path: /
+spring:
+  datasource:
+    name: authorization_29
+    url: jdbc:mysql:///authorization_29
+    username: root
+    password: admin
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+  activemq:
+    user: admin
+    password: admin
+    broker-url: tcp://127.0.0.1:61616
+    pool:
+      enabled: true
+      max-connections: 10
+      idle-timeout: 30000   #空闲的连接过期时间，默认为30秒
+    close-timeout: 15s # 在考虑结束之前等待的时间
+    in-memory: true      # 默认代理URL是否应该在内存中。如果指定了显式代理，则忽略此值。
+    non-blocking-redelivery: false  # 是否在回滚回滚消息之前停止消息传递。这意味着当启用此命令时，消息顺序不会被保留。
+    send-timeout: 0     # 等待消息发送响应的时间。设置为0等待永远。
+    packages:
+      trust-all: true
+
+#Mybatis配置
+mybatis:
+  typeAliasesPackage: com.wbst.domain
+  mapperLocations: classpath:mapper/*.xml
+  #打印Mybatis的sql语句
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

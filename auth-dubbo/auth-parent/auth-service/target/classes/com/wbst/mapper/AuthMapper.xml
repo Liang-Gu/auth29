@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wbst.mapper.AuthMapper">
+    <resultMap id="BaseResultMap" type="com.wbst.domain.Auth">
+
+    </resultMap>
+
+    <resultMap id="accessLevelMap" type="com.wbst.domain.AccessLevel">
+        <id column="level_id" property="levelId"/>
+        <id column="access_level_id" property="accessLevelId"/>
+        <id column="access_level_name" property="accessLevelName"/>
+        <id column="access_level_desc" property="accessLevelDesc"/>
+        <id column="controller_name" property="controllerName"/>
+        <id column="controller_id" property="controllerId"/>
+        <id column="reader_name" property="readerName"/>
+        <id column="reader_id" property="readerId"/>
+        <id column="valid_time" property="validTime"/>
+        <id column="create_time" property="createTime"/>
+        <id column="del_flag" property="delFlag"/>
+    </resultMap>
+    <resultMap id="accessLevelVoMap" type="com.wbst.vo.AccessLevelVo">
+        <id column="effectiveTime_start" property="effectiveTimeStart"/>
+        <id column="access_level_name" property="accessLevelName"/>
+        <id column="effectiveTime_end" property="effectiveTimeEnd"/>
+        <id column="accessLevelStatus" property="accessLevelStatus"/>
+        <id column="access_level_id" property="accessLevelId"/>
+    </resultMap>
+
+    <!--    新增通行权限-->
+    <insert id="insert">
+        insert into card_accesslevel (
+                    cardNum,
+                    accessLevelId,
+                    effectiveTime_start,
+                    accessLevelStatus,
+                    effectiveTime_end)
+        values (
+                    #{cardNum},
+                    #{accessLevelId},
+                    #{effectiveTime_start},
+                    #{accessLevelStatus},
+                    #{effectiveTime_end}
+        );
+    </insert>
+
+
+    <!--    通行权限修改-->
+    <update id="update" parameterType="com.wbst.domain.AccessLevel">
+        UPDATE card_accesslevel SET effectiveTime_start=#{effectiveTime_start},
+									effectiveTime_end=#{effectiveTime_end},
+                                    accessLevelStatus=#{accessLevelStatus}
+        WHERE cardNum=#{cardNum} and accessLevelId=#{accessLevelId}
+    </update>
+
+
+
+
+<!--  修改为永久-->
+    <update id="updateForever">
+        update card_accesslevel
+        set effectiveTime_end = null,
+            effectiveTime_start=null,
+            accessLevelStatus=0
+        where accessLevelId=#{accessLevelId} and cardNum=#{cardNum}
+    </update>
+
+
+    <update id="batchUpdate">
+        update card_accesslevel
+        set accessLevelStatus = 1,
+            effectiveTime_end=#{effectiveTimeEnd},
+            effectiveTime_start=#{effectiveTimeStart}
+           <include refid="batchUpdate"></include>
+    </update>
+
+
+    <sql id="batchUpdate">
+        <where>
+            <if test="accessLevelId!=null">
+                and accessLevelId=#{accessLevelId}
+            </if>
+            <if test="cardNums!=null and cardNums.size!=0">
+                and cardNum in
+                <foreach collection="cardNums" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </sql>
+    <!-- 批量删除-->
+    <delete id="batchDelete">
+        delete from card_accesslevel <include refid="batchDelete"></include>
+    </delete>
+
+
+
+    <sql id="batchDelete">
+        <where>
+            <if test="cardNum!=null and cardNum!=''">
+              and  cardNum=#{cardNum}
+            </if>
+            <if test="authUtils!=null and authUtils.size!=0">
+                and accessLevelId in
+                <foreach collection="authUtils" item="item" index="index" open="(" separator="," close=")">
+                    #{item.accessLevelId}
+                </foreach>
+            </if>
+        </where>
+    </sql>
+
+
+
+    <!--根据员工芯片卡号和通行权限编号查询数据库中是否有数据-->
+    <select id="findByCardNumAndaccessLevelId" resultType="com.wbst.domain.Auth">
+        select
+            id,
+            cardNum,
+            accessLevelId,
+            effectiveTime_start as effectiveTimeStart,
+            effectiveTime_end as effectiveTimeEnd,
+            accessLevelStatus,
+            del_flag
+        from card_accesslevel
+        where cardNum=#{cardNum} and accessLevelId=#{accessLevelId}
+    </select>
+
+
+    <select id="findAllAccessLevel" resultMap="accessLevelMap">
+        select
+               level_id,
+               access_level_id,
+               access_level_name,
+               access_level_desc,
+               controller_name,
+               controller_id,
+               reader_name,
+               reader_id,
+               valid_time,
+               create_time,
+               del_flag
+        from access_level
+    </select>
+
+    <!--查询共有通行权限-->
+    <select id="findCommon" resultMap="accessLevelVoMap">
+        SELECT
+            b.access_level_name as access_level_name,
+            a.effectiveTime_start as effectiveTime_start,
+            a.effectiveTime_end as effectiveTime_end,
+            a.accessLevelStatus  as accessLevelStatus,
+            a.accessLevelId as access_level_id
+        from (
+                SELECT
+                    accessLevelId,
+                    accessLevelStatus,
+                    effectiveTime_start,
+                    effectiveTime_end
+                    FROM card_accesslevel
+                    <include refid="findCommenQuery"></include>
+            GROUP BY accessLevelId,accessLevelStatus,effectiveTime_start,effectiveTime_end HAVING COUNT(*) =#{size}) as a LEFT JOIN access_level as b on a.accessLevelId=b.access_level_id
+
+    </select>
+
+    <sql id="findCommenQuery">
+        <where>
+            <if test="cardNums!=null and cardNums.size!=0">
+                and cardNum in
+                <foreach collection="cardNums" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
+    </sql>
+
+</mapper>

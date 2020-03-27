@@ -1,0 +1,33 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /
+spring:
+  datasource:
+    name: authorization_29
+    url: jdbc:mysql:///authorization_29
+    username: root
+    password: admin
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+
+#Mybatis配置
+mybatis:
+  typeAliasesPackage: com.wbst.domain
+  mapperLocations: classpath:mapper/*.xml
+  #打印Mybatis的sql语句
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

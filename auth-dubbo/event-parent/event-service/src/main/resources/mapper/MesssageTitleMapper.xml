@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wbst.mapper.MessageTitleMapper">
+    <resultMap id="BaseResultMap" type="com.wbst.domain.MessageTitle">
+        <id column="id" property="id" />
+
+    </resultMap>
+    <insert id="saveMessageTitle" parameterType="com.wbst.domain.MessageTitle" useGeneratedKeys="true" keyProperty="id" keyColumn="id" >
+        insert into t_messagetitle (
+                                    sender,
+                                    sourceSystem,
+                                    messageType,
+                                    dataType,
+                                    actionName,
+                                    deviceOuterID,
+                                    messageNo)
+        values (
+                #{sender},
+                #{sourceSystem},
+                #{messageType},
+                #{dataType},
+                #{actionName},
+                #{deviceOuterID},
+                #{messageNo}
+
+               );
+    </insert>
+
+
+</mapper>

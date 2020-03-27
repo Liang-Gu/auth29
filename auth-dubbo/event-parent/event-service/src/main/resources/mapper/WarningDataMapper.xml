@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wbst.mapper.WarningDataMapper">
+    <resultMap id="BaseResultMap" type="com.wbst.domain.WarningData">
+        <id column="warning_id" property="warningId" />
+        <id column="person_photo" property="personPhoto" />
+        <id column="person_name" property="personName" />
+        <id column="person_sn" property="personSn" />
+        <id column="person_auth_sn" property="personAuthSn" />
+        <id column="person_phone" property="personPhone" />
+        <id column="person_byvist_num" property="personByvistNum" />
+        <id column="person_dept" property="personDept" />
+        <id column="person_pass_auth" property="personPassAuth" />
+        <id column="lasted_swipe_time" property="lastedSwipeTime" />
+        <id column="abnormal_duration" property="abnormalDuration" />
+        <id column="abnorma_desc" property="abnormalDesc" />
+        <id column="alarm_num" property="alarmNum" />
+        <id column="total_alarm_num" property="totalAlarmNum" />
+        <id column="del_flag" property="delFlag" />
+        <collection property="warningDataDetails" javaType="java.util.List" ofType="com.wbst.domain.WarningDataDetail">
+            <id column="bid" property="id"/>
+            <id column="blasted_swipe_time" property="lastedSwipeTime"/>
+            <id column="babnorma_desc" property="abnormaDesc"/>
+            <id column="bhandlePeople" property="handlePeople"/>
+            <id column="bhandleTime" property="handleTime"/>
+            <id column="bpid" property="pid"/>
+        </collection>
+    </resultMap>
+    <insert id="save">
+        insert into warningdata ( person_photo,
+                                 person_name,
+                                 person_sn,
+                                 person_auth_sn,
+                                 person_phone,
+                                 person_byvist_num,
+                                 person_dept,
+                                 person_pass_auth,
+                                 lasted_swipe_time,
+                                 abnormal_duration,
+                                 abnorma_desc,
+                                 alarm_num,
+                                 total_alarm_num,
+                                 del_flag)
+        values (
+                #{personPhoto},
+                #{personName},
+                #{personSn},
+                #{personAuthSn},
+                #{personPhone},
+                #{personByvistNum},
+                #{personDept},
+                #{personPassAuth},
+                #{lastedSwipeTime},
+                #{abnormalDuration},
+                #{abnormalDesc},
+                #{alarmNum},
+                #{totalAlarmNum},
+                #{delFlag}
+               );
+    </insert>
+    
+    <!--异常处理-->
+    <insert id="handle" useGeneratedKeys="true" keyColumn="warning_id" keyProperty="warningId">
+        insert into handlewarningdata (person_photo,
+                                       person_name,
+                                       person_sn,
+                                       person_auth_sn,
+                                       person_phone,
+                                       person_byvist_num,
+                                       person_dept,
+                                       person_pass_auth,
+                                       lasted_swipe_time,
+                                       abnormal_duration,
+                                       alarm_num,
+                                       total_alarm_num,
+                                       del_flag)
+        values (
+                   #{personPhoto},
+                   #{personName},
+                   #{personSn},
+                   #{personAuthSn},
+                   #{personPhone},
+                   #{personByvistNum},
+                   #{personDept},
+                   #{personPassAuth},
+                   #{lastedSwipeTime},
+                   #{abnormalDuration},
+                   #{alarmNum},
+                   #{totalAlarmNum},
+                   #{delFlag}
+                );
+    </insert>
+
+<!--    保存处理详情-->
+    <insert id="saveDetail">
+        insert into warningdatadetail (
+                                       lasted_swipe_time,
+                                       handleTime,
+                                       abnorma_desc,
+                                       handlePeople,
+                                       pid)
+        values (
+                #{lastedSwipeTime},
+                #{handleTime},
+                #{abnormaDesc},
+                #{handlePeople},
+                #{pid}
+               );
+    </insert>
+
+
+    <!--    修改异常表中数据-->
+    <update id="update">
+        update warningdata
+        set  person_photo=#{personPhoto},
+             person_name=#{personName},
+             person_sn=#{personSn},
+             person_auth_sn=#{personAuthSn},
+             person_phone=#{personPhone},
+             person_byvist_num=#{personByvistNum},
+             person_dept=#{personDept},
+             person_pass_auth=#{personPassAuth},
+             lasted_swipe_time=#{lastedSwipeTime},
+             abnormal_duration=#{abnormalDuration},
+             abnorma_desc=#{abnormalDesc},
+             alarm_num=#{alarmNum},
+             total_alarm_num=#{totalAlarmNum},
+             del_flag =#{delFlag}
+        where warning_id=#{warningId}
+    </update>
+
+
+
+    <!--  修改已处理异常信息-->
+    <update id="updateHandleData">
+        update handlewarningdata
+        set  person_photo=#{personPhoto},
+             person_name=#{personName},
+             person_sn=#{personSn},
+             person_auth_sn=#{personAuthSn},
+             person_phone=#{personPhone},
+             person_byvist_num=#{personByvistNum},
+             person_dept=#{personDept},
+             person_pass_auth=#{personPassAuth},
+             lasted_swipe_time=#{lastedSwipeTime},
+             abnormal_duration=#{abnormalDuration},
+             abnorma_desc=#{abnormalDesc},
+             alarm_num=#{alarmNum},
+             total_alarm_num=#{totalAlarmNum},
+             del_flag =#{delFlag}
+        where person_sn=#{personSn}
+    </update>
+
+
+    <!--将被处理的数据从异常表中删除-->
+    <delete id="deleteAbnormalFromWarningData">
+        delete  from warningdata where person_sn=#{personSn}
+    </delete>
+
+
+    <select id="findByPersonSn" resultType="com.wbst.domain.WarningData">
+        select
+               warning_id  as warningId,
+               person_photo as personPhoto,
+               person_name as personName,
+               person_sn as personSn,
+               person_auth_sn as personAuthSn,
+               person_phone as personPhone,
+               person_byvist_num as personByvistNum,
+               person_dept as personDept,
+               person_pass_auth as personPassAuth,
+               lasted_swipe_time as lastedSwipeTime,
+               abnormal_duration as abnormalDuration ,
+               abnorma_desc as abnormalDesc,
+               alarm_num as alarmNum,
+               total_alarm_num,
+               del_flag as delFlag
+        from handlewarningdata where person_sn=#{personSn}
+
+
+    </select>
+
+
+    <!--查询所有未处理异常数据-->
+    <select id="findAllAbnormal" resultMap="BaseResultMap">
+        select
+               warning_id,
+               person_photo,
+               person_name,
+               person_sn,
+               person_auth_sn,
+               person_phone,
+               person_byvist_num,
+               person_dept,
+               person_pass_auth,
+               lasted_swipe_time,
+               abnormal_duration,
+               abnorma_desc,
+               alarm_num,
+               total_alarm_num,
+               del_flag
+        from warningdata  <include refid="queryOne"/>  order by lasted_swipe_time desc
+
+    </select>
+
+
+    <select id="findByWarningDataQuery" resultMap="BaseResultMap">
+        select
+               warning_id,
+               person_photo,
+               person_name,
+               person_sn,
+               person_auth_sn,
+               person_phone,
+               person_byvist_num,
+               person_dept,
+               person_pass_auth,
+               lasted_swipe_time,
+               abnormal_duration,
+               abnorma_desc,
+               alarm_num,
+               total_alarm_num,
+               del_flag
+        from handlewarningdata order by lasted_swipe_time desc
+    </select>
+
+<!--    查询处理详情-->
+    <select id="findDetailByPid" resultMap="BaseResultMap">
+        select
+               a.warning_id as warning_id,
+               a.person_photo as person_photo,
+               a.person_name as person_name,
+               a.person_sn as person_sn ,
+               a.person_auth_sn as person_auth_sn,
+               a.person_phone as person_phone,
+               a.person_byvist_num as person_byvist_num,
+               a.person_dept as person_dept ,
+               a.person_pass_auth as person_pass_auth,
+               a.lasted_swipe_time as lasted_swipe_time,
+               a.abnormal_duration as abnormal_duration,
+               a.abnorma_desc as abnorma_desc,
+               a.alarm_num as alarm_num,
+               a.total_alarm_num as total_alarm_num,
+               a.del_flag as del_flag,
+               b.id as bid,
+               b.lasted_swipe_time as blasted_swipe_time,
+               b.abnorma_desc as babnorma_desc,
+               b.handlePeople as bhandlePeople,
+               b.handleTime as bhandleTime,
+               b.pid as bpid
+        from handlewarningdata as a join warningdatadetail as b on a.warning_id=b.pid where a.warning_id=#{pid}
+    </select>
+
+    <sql id="queryOne">
+        <where>
+            <if test="deptName!=null and deptName!=''">
+                and person_dept like CONCAT("%",#{deptName},"%")
+            </if>
+            <if test="personName!=null and personName!=''">
+                and person_name like CONCAT("%",#{personName},"%")
+            </if>
+            <if test="personNum!=null and personNum!=''">
+                and person_sn=#{personNum}
+            </if>
+        </where>
+    </sql>
+</mapper>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wbst.mapper.visitorMapper.VisitorMapper">
+    <resultMap id="BaseResultMap" type="com.wbst.domain.Visitor">
+        <id column="id" property="id" />
+        <id column="headImage" property="headImage" />
+        <id column="name" property="name" />
+        <id column="sex" property="sex" />
+        <id column="certificatesType" property="certificatesType" />
+        <id column="certificatesImage" property="certificatesImage" />
+        <id column="certificatesNum" property="certificatesNum" />
+        <id column="company" property="company" />
+        <id column="phone" property="phone" />
+        <id column="totalTimes" property="totalTimes" />
+        <collection property="visitorDetails" ofType="com.wbst.domain.VisitorDetail">
+            <id column="applyNum" property="applyNum"/>
+            <id column="temporaryCardNum" property="temporaryCardNum"/>
+            <id column="visitingTime" property="visitingTime"/>
+            <id column="leaveTime" property="leaveTime"/>
+            <id column="status" property="status"/>
+        </collection>
+    </resultMap>
+    <insert id="save" keyProperty="id" keyColumn="id" useGeneratedKeys="true" >
+        insert into t_visitor (
+                headImage, name, sex, certificatesType, certificatesImage, certificatesNum,
+                company, phone, totalTimes
+                )
+         values (
+                #{headImage},#{name},#{sex},#{certificatesType},#{certificatesImage},#{certificatesNum},
+                 #{company},#{phone},#{totalTimes})
+    </insert>
+    <update id="update">
+        update t_visitor set
+                headImage = #{headImage} ,
+                name=#{name},
+                sex=#{sex},
+                certificatesType=#{certificatesType},
+                certificatesImage=#{certificatesImage},
+                certificatesNum=#{certificatesNum},
+                company=#{company},
+                phone=#{phone},
+                totalTimes=#{totalTimes}
+        where
+                id=#{id};
+    </update>
+    <select id="findAllByQuery" resultMap="BaseResultMap">
+
+        SELECT
+            vt_id,
+            vt_vl_id,
+            vt_name,
+            vt_sex,
+            vt_identify_type,
+            vt_identify_no,
+            vt_identify_imgurl,
+            vt_imgurl,
+            tmpcard_no,
+            vt_in_time,
+            vt_out_time,
+            vt_status,
+            vt_visit_department_id,
+            vt_visit_employee_id,
+            vt_applyno
+        FROM visitor
+
+<!--        <include refid="byQuery"/>-->
+    </select>
+
+
+    <!--xxx被访记录查询-->
+    <select id="findByVisitedName" resultType="com.wbst.domain.Visitor">
+        select
+            a.headImage as headImage,
+            a.name as name,
+            b.applyNum as applyNum,
+            b.temporaryCardNum as temporaryCardNum,
+            b.visitingTime as visitingTime,
+            b.leaveTime as leaveTime,
+            b.status as status
+        from t_visitor as a join t_visitor_detail as b on a.id=b.pid
+        where b.visitedName=#{visitedName};
+    </select>
+
+    <sql id="byQuery">
+        <where>
+            <if test="name!=null and name!=''">
+              and  name like CONCAT('%',#{name},'%')
+            </if>
+            <if test="company!=null and company!=''">
+              and  company like  CONCAT('%',#{company},'%')
+            </if>
+            <if test="certificatesNum!=null and certificatesNum!=''">
+               and certificatesNum = #{certificatesNum}
+            </if>
+            <if test="phone!=null and phone!=''">
+               and phone=#{phone}
+            </if>
+        </where>
+    </sql>
+</mapper>

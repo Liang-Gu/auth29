@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wbst.mapper.visitorMapper.VisitorDetailMapper">
+    <resultMap id="BaseResultMap" type="com.wbst.domain.VisitorDetail">
+        <id column="id" property="id" />
+        <id column="pid" property="pid" />
+        <id column="applyNum" property="applyNum" />
+        <id column="visitedDept" property="visitedDept" />
+        <id column="visitedName" property="visitedName" />
+        <id column="temporaryCardNum" property="temporaryCardNum" />
+        <id column="visitingTime" property="visitingTime" />
+        <id column="leaveTime" property="leaveTime" />
+        <id column="status" property="status" />
+    </resultMap>
+
+    <!--//通行记录/xx访问记录-->
+    <select id="findByQuery" resultMap="BaseResultMap">
+        select
+            a.headImage as headImage,
+            a.name as name,
+            b.visitedDept as visitedDept,
+            b.visitedName as visitedName,
+            b.applyNum as applyNum,
+            b.temporaryCardNum as temporaryCardNum,
+            b.visitingTime as visitingTime,
+            b.leaveTime as leaveTime,
+            b.status as status
+        from t_visitor as a join t_visitor_detail as b on a.id=b.pid
+        <include refid="query1"/>
+    </select>
+
+    <sql id="query1">
+        <where>
+            <if test="visitorName!=null and visitorName!=''">
+                and a.name like '%'+#{visitorName}+'%'
+            </if>
+            <if test="visitedName!=null and visitedName!=''">
+                and b.visitedName like '%'+#{visitedName}+'%'
+            </if>
+            <if test="applyNum!=null and applyNum!=''">
+                and b.applyNum=#{applyNum}
+            </if>
+            <if test="temporaryCardNum!=null and temporaryCardNum!=''">
+                and b.temporaryCardNum=#{temporaryCardNum}
+            </if>
+        </where>
+    </sql>
+</mapper>

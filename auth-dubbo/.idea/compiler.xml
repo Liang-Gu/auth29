@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="auth-service" />
+        <module name="user-service" />
+        <module name="table-api" />
+        <module name="auth-api" />
+        <module name="event-service" />
+        <module name="user-api" />
+        <module name="base-api" />
+        <module name="table-service" />
+        <module name="base-service" />
+        <module name="event-api" />
+        <module name="table-parent" />
+        <module name="basic-common" />
+        <module name="consumer-service" />
+        <module name="basic-utils" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="auth-api" target="1.8" />
+      <module name="auth-dubbo" target="1.8" />
+      <module name="auth-parent" target="1.8" />
+      <module name="auth-service" target="1.8" />
+      <module name="base-api" target="1.8" />
+      <module name="base-parent" target="1.8" />
+      <module name="base-service" target="1.8" />
+      <module name="basic-common" target="1.8" />
+      <module name="basic-parent" target="1.8" />
+      <module name="basic-utils" target="1.8" />
+      <module name="consumer-parent" target="1.8" />
+      <module name="consumer-service" target="1.8" />
+      <module name="event-api" target="1.8" />
+      <module name="event-parent" target="1.8" />
+      <module name="event-service" target="1.8" />
+      <module name="table-api" target="1.8" />
+      <module name="table-parent" target="1.8" />
+      <module name="table-service" target="1.8" />
+      <module name="user-api" target="1.8" />
+      <module name="user-parent" target="1.8" />
+      <module name="user-service" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="auth-api" options="-parameters" />
+      <module name="auth-parent" options="" />
+      <module name="auth-service" options="-parameters" />
+      <module name="base-api" options="-parameters" />
+      <module name="base-service" options="-parameters" />
+      <module name="basic-common" options="-parameters" />
+      <module name="basic-utils" options="-parameters" />
+      <module name="consumer-service" options="-parameters" />
+      <module name="event-api" options="-parameters" />
+      <module name="event-parent" options="" />
+      <module name="event-service" options="-parameters" />
+      <module name="table-api" options="-parameters" />
+      <module name="table-parent" options="-parameters" />
+      <module name="table-service" options="-parameters" />
+      <module name="user-api" options="-parameters" />
+      <module name="user-service" options="-parameters" />
+    </option>
+  </component>
+</project>

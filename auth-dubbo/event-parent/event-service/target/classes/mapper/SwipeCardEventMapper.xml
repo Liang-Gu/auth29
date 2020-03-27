@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wbst.mapper.SwipeCardEventMapper">
+    <resultMap id="BaseResultMap" type="com.wbst.domain.SwipeCardEvent">
+        <id column="id" property="id" />
+
+    </resultMap>
+
+    <insert id="saveswipeCardEvent">
+        insert into swipecardevent (
+                                    cardNumber,
+                                    personCode,
+                                    cardholder,
+                                    controller_id,
+                                    reader_id,
+                                    time,
+                                    accessResult,
+                                    pid)
+        values (
+                #{cardNumber},
+                #{personCode},
+                #{cardholder},
+                #{controllerId},
+                #{readerId},
+                #{time},
+                #{accessResult},
+                #{pid}
+                );
+    </insert>
+
+
+</mapper>
